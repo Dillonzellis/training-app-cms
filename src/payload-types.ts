@@ -422,6 +422,7 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  role: 'superAdmin' | 'user';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -801,11 +802,7 @@ export interface CurrentDayBox {
   id: number;
   title: string;
   status: boolean;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
+  user?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -1381,6 +1378,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1405,8 +1403,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface CurrentDayBoxesSelect<T extends boolean = true> {
   title?: T;
   status?: T;
-  generateSlug?: T;
-  slug?: T;
+  user?: T;
   updatedAt?: T;
   createdAt?: T;
 }

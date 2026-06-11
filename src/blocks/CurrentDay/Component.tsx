@@ -22,6 +22,18 @@ const Checkbox = ({ title, status, id, onChange }: CheckboxProps) => {
   )
 }
 
+const handleSubmit = async (checked: Record<number, boolean>) => {
+  await Promise.all(
+    Object.entries(checked).map(([id, status]) =>
+      fetch(`/api/currentDayBoxes/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      }),
+    ),
+  )
+}
+
 export default function CurrentDay({ splitDays }: CurrentDayBlock) {
   const [checked, setChecked] = useState(() =>
     Object.fromEntries(
@@ -30,8 +42,6 @@ export default function CurrentDay({ splitDays }: CurrentDayBlock) {
         .map((split) => [split.id, split.status]),
     ),
   )
-
-  console.log(checked, setChecked)
 
   return (
     <div className="container">
@@ -50,6 +60,7 @@ export default function CurrentDay({ splitDays }: CurrentDayBlock) {
           )
         })}
       </div>
+      <button onClick={() => handleSubmit(checked)}>Submit</button>
     </div>
   )
 }
